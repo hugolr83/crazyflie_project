@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  argos:
+    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-simulation/argos:pdr
+    network_mode: host
+    privileged: true
+    environment:
+      - DISPLAY=:0
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+  backend:
+    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-backend/backend:pdr
+    network_mode: host
+    environment:
+      - ARGOS_DRONES_STARTING_PORT=3995
+      - ARGOS_NUMBER_OF_DRONES=2
+      - ARGOS_ENDPOINT=127.0.0.1
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+    depends_on:
+      - argos
+  client:
+    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-client/client:pdr
+    network_mode: host
+    depends_on:
+      - argos
+      - backend
