@@ -1,15 +1,27 @@
+#
+# This docker-compose file only works with Nvidia cards with the proprietary driver installed
+# If you don't have a Nvidia GPU or you use the open source Nouveau driver, use the standard docker-compose.yaml
+# You will also need to install the Nvidia Container Toolkit first.
+# Instructions: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
+#
 version: "3.9"
 
 services:
   simulation:
     image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-simulation/simulation:1.0.1
-    privileged: true
     networks:
       - exploration
     environment:
       - DISPLAY
+      - QT_X11_NO_MITSHM=1
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
 
   database:
     image: postgres:14-alpine
