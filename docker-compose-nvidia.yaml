@@ -43,7 +43,7 @@ services:
     environment:
     - DISPLAY
     - QT_X11_NO_MITSHM=1
-    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-simulation/simulation:1.0.1
+    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-simulation/simulation:1.1.0
     networks:
     - exploration
     volumes:
