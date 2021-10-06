@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "update_tag_script"
+version = "0.1.0"
+description = "Will update your Docker tag because ain't nobody got time for that"
+authors = ["William Trépanier <william.trepanier@polymtl.ca>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+GitPython = "^3.1.24"
+click = "^8.0.1"
+PyYAML = "^5.4.1"
+
+[tool.poetry.dev-dependencies]
+mypy = "^0.910"
+types-PyYAML = "^5.4.10"
+
+[tool.poetry.scripts]
+update-tag = 'update_tag_script.script:update_tag'
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

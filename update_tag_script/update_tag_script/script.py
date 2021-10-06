@@ -10,9 +10,8 @@ COMMIT_MESSAGE: Final = "chore: Updated Docker image tag"
 
 
 def find_and_replace_tag(data: dict[str, Any], image_name: str, image_tag: str) -> None:
-    for service, service_data in data["services"].items():
-        image = service_data.get("image")
-        if image_name in image:
+    for service_data in data["services"].values():
+        if image_name in service_data.get("image"):
             service_data["image"] = image_name + ":" + image_tag
 
 
@@ -26,14 +25,14 @@ def update_image_tag(file_path: str, image_name: str, image_tag: str) -> None:
 
 
 @click.command()
-@click.option("--docker-image", help="The new Docker image to update to")
-@click.option("--repo-url", help="URL of the repo to update")
+@click.option("--docker-image", help="The new Docker image to update to", required=True)
+@click.option("--repo-url", help="URL of the repo to update", required=True)
 def update_tag(docker_image: str, repo_url: str) -> None:
     splitted_docker_image = docker_image.split(":")
 
     with tempfile.TemporaryDirectory() as temporary_directory:
         repo = Repo.clone_from(url=repo_url, to_path=temporary_directory)
-        for root, dirs, files in os.walk(temporary_directory):
+        for root, _, files in os.walk(temporary_directory):
             for file in files:
                 if file.startswith("docker-compose"):
                     update_image_tag(os.path.join(root, file), splitted_docker_image[0], splitted_docker_image[1])
