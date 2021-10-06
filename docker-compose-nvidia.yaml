@@ -1,61 +1,51 @@
-#
-# This docker-compose file only works with Nvidia cards with the proprietary driver installed
-# If you don't have a Nvidia GPU or you use the open source Nouveau driver, use the standard docker-compose.yaml
-# You will also need to install the Nvidia Container Toolkit first.
-# Instructions: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
-#
-version: "3.9"
-
+networks:
+  exploration: null
 services:
-  simulation:
-    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-simulation/simulation:1.0.1
-    networks:
-      - exploration
+  backend:
+    depends_on:
+    - database
+    - simulation
+    devices:
+    - /dev/bus/usb:/dev/bus/usb
     environment:
-      - DISPLAY
-      - QT_X11_NO_MITSHM=1
-    volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
+    - ARGOS_DRONES_STARTING_PORT=3995
+    - ARGOS_NUMBER_OF_DRONES=2
+    - ARGOS_ENDPOINT=simulation
+    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-backend/backend:1.1.0
+    networks:
+    - exploration
+    ports:
+    - 8000:8000
+  client:
+    depends_on:
+    - backend
+    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-client/client:1.1.7
+    networks:
+    - exploration
+    ports:
+    - 8080:8080
+  database:
+    environment:
+    - POSTGRES_PASSWORD=GOEXPLORE
+    image: postgres:14-alpine
+    networks:
+    - exploration
+    ports:
+    - 5432:5432
+  simulation:
     deploy:
       resources:
         reservations:
           devices:
-            - driver: nvidia
-              capabilities: [gpu]
-
-  database:
-    image: postgres:14-alpine
-    networks:
-      - exploration
-    ports:
-      - 5432:5432
+          - capabilities:
+            - gpu
+            driver: nvidia
     environment:
-      - POSTGRES_PASSWORD=GOEXPLORE
-
-  backend:
-    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-backend/backend:0.10.0
+    - DISPLAY
+    - QT_X11_NO_MITSHM=1
+    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-simulation/simulation:1.0.1
     networks:
-      - exploration
-    ports:
-      - 8000:8000
-    environment:
-      - ARGOS_DRONES_STARTING_PORT=3995
-      - ARGOS_NUMBER_OF_DRONES=2
-      - ARGOS_ENDPOINT=simulation
-    devices:
-      - /dev/bus/usb:/dev/bus/usb
-    depends_on:
-      - database
-      - simulation
-
-  client:
-    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-client/client:1.1.7
-    networks:
-      - exploration
-    ports:
-      - 8080:8080
-    depends_on:
-      - backend
-
-networks:
-  exploration:
+    - exploration
+    volumes:
+    - /tmp/.X11-unix:/tmp/.X11-unix
+version: '3.9'
