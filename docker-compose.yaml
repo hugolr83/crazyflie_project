@@ -11,7 +11,7 @@ services:
     - ARGOS_DRONES_STARTING_PORT=3995
     - ARGOS_NUMBER_OF_DRONES=2
     - ARGOS_ENDPOINT=simulation
-    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-backend/backend:1.5.1
+    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-backend/backend:1.6.0
     networks:
     - exploration
     ports:
