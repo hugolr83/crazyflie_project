@@ -29,3 +29,7 @@ docker login registry.gitlab.com # login with your Gitlab username and password 
 xhost +
 docker-compose up
 ```
+
+Liens:
+Client: [http://localhost:8080](http://localhost:8080)
+Documentation interactive du backend [http://localhost:8000/docs](http://localhost:8000/docs)
