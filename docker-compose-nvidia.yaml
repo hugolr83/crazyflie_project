@@ -12,7 +12,7 @@ services:
     - ARGOS_NUMBER_OF_DRONES=2
     - ARGOS_ENDPOINT=simulation
     - DATABASE_ENDPOINT=database
-    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-backend/backend:1.11.1
+    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-backend/backend:1.12.0
     networks:
     - exploration
     ports:
