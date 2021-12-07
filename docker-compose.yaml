@@ -36,7 +36,7 @@ services:
   simulation:
     environment:
     - DISPLAY
-    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-simulation/simulation:1.2.9
+    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-simulation/simulation:1.3.0
     networks:
     - exploration
     privileged: true
