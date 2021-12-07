@@ -20,7 +20,7 @@ services:
   client:
     depends_on:
     - backend
-    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-client/client:1.9.0
+    image: registry.gitlab.com/polytechnique-montr-al/inf3995/20213/equipe-100/inf3995-client/client:1.9.1
     networks:
     - exploration
     ports:
