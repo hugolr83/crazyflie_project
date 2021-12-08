@@ -33,3 +33,8 @@ docker-compose up
 Liens:
 Client: [http://localhost:8080](http://localhost:8080)
 Documentation interactive du backend [http://localhost:8000/docs](http://localhost:8000/docs)
+
+## Lancer des test dans 'Client'
+```bash
+npm run test
+```
